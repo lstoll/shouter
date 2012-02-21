@@ -2,7 +2,8 @@
   (:use [hiccup.core :only [html h]]
         [hiccup.page-helpers :only [doctype]]
         [hiccup.form-helpers :only [form-to label text-area submit-button]]
-        [noir.core :only [defpage defpartial]])
+        [noir.core :only [defpage defpartial]]
+        [noir.fetch.remotes :only [defremote]])
   (:require [shouter.views.common :as common]
             [clojure.string :as str]
             [ring.util.response :as ring]
@@ -13,25 +14,21 @@
    (form-to [:post "/"]
             (label "shout" "What do you want to SHOUT?") 
             (text-area "shout")
-            (submit-button "SHOUT!"))])
+            (submit-button {:id "shout-button"} "SHOUT!"))])
 
-
-(defpartial shout [shout]
-  [:h2 {:class "shout"} (h (:body shout))])
-
-(defpartial display-shouts [shouts]
-  [:div {:id "shouts sixteen columns alpha omega"}
-   (map
-    shout
-    shouts)])
+(defpartial shout-container []
+  [:div {:id "shouts" :class "sixteen columns alpha omega"}])
 
 (defpage "/" []
   (common/layout "SHOUTER"
                  (shout-form)
                  [:div {:class "clear"}]
-                 (display-shouts (model/all))))
+                 (shout-container)))
 
 (defpage [:post "/"] {shout :shout}
   (when-not (str/blank? shout)
     (model/create shout))
   (ring/redirect "/"))
+
+(defremote shouts-remote []
+  (model/all))
