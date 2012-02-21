@@ -1,24 +1,30 @@
 (ns shouter.views.shouts
   (:use [hiccup.core :only [html h]]
         [hiccup.page-helpers :only [doctype]]
-        [hiccup.form-helpers :only [form-to label text-area submit-button]])
-  (:require [shouter.views.layout :as layout]))
+        [hiccup.form-helpers :only [form-to label text-area submit-button]]
+        [noir.core :only [defpage defpartial]])
+  (:require [shouter.views.common :as common]
+            [shouter.models.shout :as model]))
 
-(defn shout-form []
+(defpartial shout-form []
   [:div {:id "shout-form" :class "sixteen columns alpha omega"}
    (form-to [:post "/"]
             (label "shout" "What do you want to SHOUT?") 
             (text-area "shout")
             (submit-button "SHOUT!"))])
 
-(defn display-shouts [shouts]
+
+(defpartial shout [shout]
+  [:h2 {:class "shout"} (h (:body shout))])
+
+(defpartial display-shouts [shouts]
   [:div {:id "shouts sixteen columns alpha omega"}
    (map
-    (fn [shout] [:h2 {:class "shout"} (h (:body shout))])
+    shout
     shouts)])
 
-(defn index [shouts]
-  (layout/common "SHOUTER"
+(defpage "/" []
+  (common/layout "SHOUTER"
                  (shout-form)
                  [:div {:class "clear"}]
-                 (display-shouts shouts)))
+                 (display-shouts (model/all))))
