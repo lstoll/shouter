@@ -13,7 +13,7 @@
   [:div {:id "shout-form" :class "sixteen columns alpha omega"}
    (form-to [:post "/"]
             (label "shout" "What do you want to SHOUT?") 
-            (text-area "shout")
+            (text-area {:id "shout-input"} "shout")
             (submit-button {:id "shout-button"} "SHOUT!"))])
 
 (defpartial shout-container []
@@ -32,3 +32,7 @@
 
 (defremote shouts-remote []
   (model/all))
+
+(defremote create-shout-remote [shout]
+  (when-not (str/blank? shout)
+    (model/create shout)))
