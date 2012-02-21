@@ -4,6 +4,8 @@
         [hiccup.form-helpers :only [form-to label text-area submit-button]]
         [noir.core :only [defpage defpartial]])
   (:require [shouter.views.common :as common]
+            [clojure.string :as str]
+            [ring.util.response :as ring]
             [shouter.models.shout :as model]))
 
 (defpartial shout-form []
@@ -28,3 +30,8 @@
                  (shout-form)
                  [:div {:class "clear"}]
                  (display-shouts (model/all))))
+
+(defpage [:post "/"] {shout :shout}
+  (when-not (str/blank? shout)
+    (model/create shout))
+  (ring/redirect "/"))
