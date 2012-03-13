@@ -11,10 +11,11 @@
                  ]
   :plugins [[lein-cljsbuild "0.1.2"]]
   :hooks [leiningen.cljsbuild]
-  :cljsbuild {:source-path "src"
-              :compiler 
-              {:output-dir "resources/public/cljs/"
-               :output-to "resources/public/cljs/bootstrap.js"
-               :optimizations :simple
-               :pretty-print true}}
+  :cljsbuild {:builds
+              [{:source-path "src",
+                :compiler
+                {:output-dir "resources/public/cljs/",
+                 :output-to "resources/public/cljs/bootstrap.js",
+                 :optimizations :simple,
+                 :pretty-print true}}]}
   :main shouter.main)
