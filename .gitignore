@@ -6,3 +6,4 @@ classes
 log/*
 /db
 /resources/public/cljs
+/.lein-plugins
