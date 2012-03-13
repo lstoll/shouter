@@ -9,7 +9,8 @@
                  [crate "0.1.0-SNAPSHOT"]
                  [fetch "0.1.0-SNAPSHOT"]
                  ]
-  :dev-dependencies [[lein-cljsbuild "0.0.13"]]
+  :dev-dependencies [[lein-cljsbuild "0.1.2"]]
+  :hooks [leiningen.cljsbuild]
   :cljsbuild {:source-path "src"
               :compiler 
               {:output-dir "resources/public/cljs/"
